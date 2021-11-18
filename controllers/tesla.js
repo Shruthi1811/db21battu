@@ -137,7 +137,7 @@ exports.tesla_delete_Page = async function(req, res) {
     console.log("Delete view for id "  + req.query.id) 
     try{ 
         result = await tesla.findById(req.query.id) 
-        res.render('tesladelete', { title: 'Costume Delete', toShow: 
+        res.render('tesladelete', { title: 'Tesla Delete', toShow: 
 result }); 
     } 
     catch(err){ 
