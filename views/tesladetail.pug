@@ -1,0 +1,22 @@
+extends layout 
+ 
+block content 
+  h1= title 
+ 
+  - let teslaid = toShow._id 
+  - let Model = toShow.Model 
+  - let Year = toShow.Year 
+  - let Price = toShow.Price
+  div 
+    div.row 
+      div(class='teslaAttr mr-3') tesla ID is: 
+      div #{teslaid} 
+    div.row 
+      div(class='teslaAttr mr-3') Model is: 
+      div #{Model} 
+    div.row 
+      div(class='teslaAttr mr-3') Year is: 
+      div #{Year} 
+    div.row 
+      div(class='teslaAttr mr-3') Price is: 
+      div #{Price} 

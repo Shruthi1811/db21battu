@@ -1,11 +1,11 @@
 extends layout
 block content
   h1= title
-  - let teslas = [{teslaModel:"Model 3", teslaPrice: 300000, teslaRange:"500 Miles"},{teslaModel:"Cyber Truck", teslaPrice: 5000000, teslaRange:"600 Miles"},{teslaModel:"Roadster", teslaPrice: 3000000, teslaRange:"400 Miles"}]
+  //- let results = [{teslaModel:"Model 3", teslaPrice: 300000, teslaRange:"500 Miles"},{teslaModel:"Cyber Truck", teslaPrice: 5000000, teslaRange:"600 Miles"},{teslaModel:"Roadster", teslaPrice: 3000000, teslaRange:"400 Miles"}]
   div(class="container-fluid mt-3")
   div(class="row")
-    each tesla,index in teslas
-        div(class="col-sm-4" onclick=`buy(${index})`) #{tesla.teslaModel} - #{tesla.teslaPrice} - #{tesla.teslaRange} 
+    each tesla, index in results
+        div(class="col-sm-4" onclick=`buy(${index})`) #{tesla.Model} - #{tesla.Year} - #{tesla.Price} 
 
         
     script.

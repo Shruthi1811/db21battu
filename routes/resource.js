@@ -11,7 +11,7 @@ router.get('/', api_controller.api);
 // POST request for creating a tesla.
 router.post('/tesla', tesla_controller.tesla_create_post);
 // DELETE request to delete tesla.
-router.delete('/teslas/:id', tesla_controller.tesla_delete);
+router.delete('/tesla/:id', tesla_controller.tesla_delete); 
 // PUT request to update tesla.
 router.put('/tesla/:id', tesla_controller.tesla_update_put);
 // GET request for one tesla.

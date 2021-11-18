@@ -19,5 +19,13 @@
   "devDependencies": {},
   "author": "battu",
   "license": "ISC",
-  "description": ""
+  "description": "Assignment 11",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shruthi1811/db21battu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Shruthi1811/db21battu/issues"
+  },
+  "homepage": "https://github.com/Shruthi1811/db21battu#readme"
 }
