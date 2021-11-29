@@ -3,14 +3,24 @@ block content
   h1= title
   //- let results = [{teslaModel:"Model 3", teslaPrice: 300000, teslaRange:"500 Miles"},{teslaModel:"Cyber Truck", teslaPrice: 5000000, teslaRange:"600 Miles"},{teslaModel:"Roadster", teslaPrice: 3000000, teslaRange:"400 Miles"}]
   div(class="container-fluid mt-3")
-  div(class="row")
+  a(href="/tesla/create" class="btn btn-secondary") Create
+  div(class="row m-1")
     each tesla, index in results
-        div(class="col-sm-4" onclick=`buy(${index})`) #{tesla.Model} - #{tesla.Year} - #{tesla.Price} 
+     -let destination = `dispatch(\"/tesla/update?id=${tesla._id}\")`
+     -let destination1 = `dispatch(\"/tesla/detail?id=${tesla._id}\")`
+     -let destination2 = `dispatch(\"/tesla/delete?id=${tesla._id}\")`
+     div(class="card col-sm-4")
+        div(class="card-body" onclick=`buy(${index})`) #{tesla.Model} - #{tesla.Year} - #{tesla.Price} 
 
-        
+        button.btn( class="btn-primary ml-1", onclick= destination) Update
+        button.btn( class="btn-primary ml-1", onclick= destination1) Detail
+        button.btn( class="btn-danger ml-1", onclick= destination2) Delete 
     script.
 
       function buy(itmNo)
       {
         alert(`You purchased Item ${itmNo+1}`)
       } 
+      function dispatch(path){ 
+                window.location.href=path 
+                }

@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 var tesla = require("./models/tesla");
 
 var indexRouter = require('./routes/index');
@@ -17,31 +20,31 @@ async function recreateDB() {
   // Delete everything
   await tesla.deleteMany();
   let instance1 = new tesla({
-      Model: "y",
-      Year: "2010",
-      Price: "24000"
+    Model: "y",
+    Year: "2010",
+    Price: "24000"
   });
-  instance1.save(function(err, doc) {
-      if (err) return console.error(err);
-      console.log("First object saved")
+  instance1.save(function (err, doc) {
+    if (err) return console.error(err);
+    console.log("First object saved")
   });
   let instance2 = new tesla({
-     Model: "x",
-      Year: "2015",
-      Price: "49000"
+    Model: "x",
+    Year: "2015",
+    Price: "49000"
   });
-  instance2.save(function(err, doc) {
-      if (err) return console.error(err);
-      console.log("Second object saved")
+  instance2.save(function (err, doc) {
+    if (err) return console.error(err);
+    console.log("Second object saved")
   });
   let instance3 = new tesla({
-      Model: "z",
-     Year: "2016",
-      Price: "28000"
+    Model: "z",
+    Year: "2016",
+    Price: "28000"
   });
-  instance3.save(function(err, doc) {
-      if (err) return console.error(err);
-      console.log("Third object saved")
+  instance3.save(function (err, doc) {
+    if (err) return console.error(err);
+    console.log("Third object saved")
   });
 }
 let reseed = true;
@@ -56,6 +59,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 module.exports = app;
@@ -63,8 +68,39 @@ const connectionString = process.env.MONGO_CON
 mongoose = require('mongoose');
 mongoose.connect(connectionString,
   {
-    useNewUrlParser: true, useUnifiedTopology: true 
+    useNewUrlParser: true, useUnifiedTopology: true
   });
+
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    Account.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }));
+
+
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+// passport config 
+// Use the existing connection 
+// The Account model  
+var Account = require('./models/account');
+
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -73,6 +109,7 @@ app.use('/tesla', teslaRouter);
 app.use('/addmods', addmodsRouter);
 app.use('/selector', selectorRouter);
 app.use('/resource', resourceRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
